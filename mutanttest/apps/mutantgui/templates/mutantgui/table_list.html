@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+    {% block table_list %}
+        <table>
+            {% for db_table in table_list %}
+                <tr>
+                    <td>{{ db_table.object_name }}</td>
+                    <td><a href="{% url 'field_list' db_table.pk %}">{% trans "Columns" %}</a></td>
+                    <td><a href="{% url 'table_update' db_table.pk %}">{% trans "Update" %}</a></td>
+                    <td><a href="{% url 'table_delete' db_table.pk %}">{% trans "Delete" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endblock table_list %}
+    {% block table_controls %}
+        <div>
+            <a href="{% url 'table_create' %}">{% trans "Create" %}</a>
+        </div>
+    {% endblock table_controls %}
+{% endblock content %}

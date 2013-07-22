@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n inspector %}
+{% block content %}
+    {% block table_info %}
+        <div>
+            <span>{% trans "Table name" %}: {{ parent_table_name }}</span>
+        </div>
+    {% endblock table_info %}
+    {% block field_list %}
+        <table>
+            <tr>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Type" %}</th>
+                <th>{% trans "Null allowed" %}</th>
+                <th>{% trans "Blank allowed" %}</th>
+                <th>{% trans "Is primary key" %}</th>
+                <th>{% trans "Is unique" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+            {% for field in field_list %}
+                <tr>
+                    <td>{{ field.name }}</td>
+                    <td>{{ field|get_field_type }}</td>
+                    <td>{{ field.null }}</td>
+                    <td>{{ field.blank }}</td>
+                    <td>{{ field.primary_key }}</td>
+                    <td>{{ field.unique }}</td>
+                    <td>
+                        <a href="{% url 'field_delete' parent_table_id field.pk %}">{% trans "Delete" %}</a>
+                        <a href="{% url 'field_update' parent_table_id field.pk %}">{% trans "Update" %}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endblock field_list %}
+    {% block table_controls %}
+        <div>
+            <form action="{% url 'field_create' parent_table_id %}" method="get">
+                {{ field_type_form.as_p }}
+                <input type="submit" value="{% trans 'Add' %}" />
+            </form>
+            <a href="{% url 'table_list' %}">{% trans "Back" %}</a>
+        </div>
+    {% endblock table_controls %}
+{% endblock content %}
